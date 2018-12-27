@@ -15,9 +15,12 @@
     "replay redux actions"
   ],
   "author": "Klaus Paiva",
-  "license": "GPLv3",
+  "license": "GPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/klauspaiva/redux-replayable/issues"
   },
-  "homepage": "https://github.com/klauspaiva/redux-replayable#readme"
+  "homepage": "https://github.com/klauspaiva/redux-replayable#readme",
+  "devDependencies": {
+    "typescript": "^3.2.2"
+  }
 }
