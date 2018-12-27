@@ -16,6 +16,11 @@
     "type": "git",
     "url": "git+https://github.com/klauspaiva/redux-replayable.git"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "keywords": [
     "redux actions",
     "replay redux actions"
@@ -27,6 +32,9 @@
   },
   "homepage": "https://github.com/klauspaiva/redux-replayable#readme",
   "devDependencies": {
+    "husky": "^1.2.1",
+    "prettier": "^1.15.3",
+    "pretty-quick": "^1.8.0",
     "typescript": "^3.2.2"
   }
 }
