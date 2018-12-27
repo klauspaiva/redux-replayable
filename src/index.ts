@@ -1,5 +1,5 @@
-import { db as actionsMap } from './middleware';
-import { Action } from './middleware/types';
+import { db as actionsMap } from '/storage';
+import { Action } from './types';
 
 export const middleware = (store: any) => (next: any) => (action: Action) => {
   console.group(action.type);
