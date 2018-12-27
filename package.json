@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --config jestconfig.json",
     "prepare": "yarn run build"
   },
   "repository": {
@@ -32,9 +32,12 @@
   },
   "homepage": "https://github.com/klauspaiva/redux-replayable#readme",
   "devDependencies": {
+    "@types/jest": "^23.3.10",
     "husky": "^1.2.1",
+    "jest": "^23.6.0",
     "prettier": "^1.15.3",
     "pretty-quick": "^1.8.0",
+    "ts-jest": "^23.10.5",
     "typescript": "^3.2.2"
   }
 }
