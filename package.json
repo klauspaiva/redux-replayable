@@ -2,11 +2,15 @@
   "name": "redux-replayable",
   "version": "1.0.0",
   "description": "A Redux utility to collect actions for replaying and logging, with whitelisting and GDPR-friendly controls.",
-  "main": "index.js",
-  "files": ["lib/**/*"],
+  "main": "dist/index.js",
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch": "tsc -w",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "yarn run build"
   },
   "repository": {
     "type": "git",

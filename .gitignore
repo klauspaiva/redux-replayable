@@ -1,5 +1,5 @@
 # Project-specific entries
-/lib/
+/dist/
 
 # Logs
 logs

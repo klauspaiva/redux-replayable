@@ -1,1 +1,10 @@
-export const middleware = (a: string, b: number) => console.info(a, b);
+export const middleware = (store: any) => (next: any) => (action: any) => {
+  console.group(action.type);
+  console.info("dispatching action", action);
+  let result = next(action);
+  console.log("next state", store.getState());
+  console.groupEnd();
+  return result;
+};
+
+export default middleware;
