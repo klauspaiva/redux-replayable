@@ -1,0 +1,23 @@
+{
+  "name": "redux-replayable",
+  "version": "1.0.0",
+  "description": "A Redux utility to collect actions for replaying and logging, with whitelisting and GDPR-friendly controls.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/klauspaiva/redux-replayable.git"
+  },
+  "keywords": [
+    "redux actions",
+    "replay redux actions"
+  ],
+  "author": "Klaus Paiva",
+  "license": "GPLv3",
+  "bugs": {
+    "url": "https://github.com/klauspaiva/redux-replayable/issues"
+  },
+  "homepage": "https://github.com/klauspaiva/redux-replayable#readme"
+}
