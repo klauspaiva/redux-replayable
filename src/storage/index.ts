@@ -1,4 +1,4 @@
-import { Action } from '/types';
+import { Action } from '../types';
 
 class ActionsDB<K, V> {
   db: Map<K, V[]>;
