@@ -2,16 +2,21 @@ import { db } from '../storage';
 import { Action } from '../types';
 import { CreateMiddlewareOptions } from './types';
 
-const middleware = (store: any) => (next: any) => (action: Action) => {
-    console.group(action.type);
-    console.info(db.get(store));
-    db.add(store, action);
-    console.info('dispatching action', action);
-    let result = next(action);
-    console.log('next state', store.getState());
-    console.info(db.get(store));
-    console.groupEnd();
-    return result;
+export default (config: CreateMiddlewareOptions = {}) => (store: any) => {
+    const key = config.id || store;
+    db.init({
+        ...config,
+        id: key,
+    });
+    return (next: any) => (action: Action) => {
+        console.group(action.type);
+        console.info(db.get(key));
+        db.add(key, action);
+        console.info('dispatching action', action);
+        let result = next(action);
+        console.log('next state', store.getState());
+        console.info(db.get(key));
+        console.groupEnd();
+        return result;
+    };
 };
-
-export default (config: CreateMiddlewareOptions) => middleware;

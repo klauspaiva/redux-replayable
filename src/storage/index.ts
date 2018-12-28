@@ -12,8 +12,8 @@ class DB {
     constructor() {
         this.db = new Map();
     }
-    init(key: any, config: CreateMiddlewareOptions) {
-        this.db.set(key, {
+    init(config: CreateMiddlewareOptions) {
+        this.db.set(config.id, {
             ...defaultEntry,
             ...pick(config, ['actionFilterFunction', 'gdprRetrievalFunction']),
         });
