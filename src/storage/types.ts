@@ -1,7 +1,7 @@
 import { Action } from '../types';
 
-export interface CreateMiddlewareOptions {
-    id?: any;
+export interface StorageEntry {
+    actions: Action[];
     actionFilterFunction?: (action: Action) => boolean;
     gdprRetrievalFunction?: () => Action[];
 }

@@ -1,21 +1,37 @@
+import pick from 'lodash/pick';
 import { Action } from '../types';
+import { CreateMiddlewareOptions } from '../middleware/types';
+import { StorageEntry } from './types';
 
-class ActionsDB<K, V> {
-  db: Map<K, V[]>;
-  constructor() {
-    this.db = new Map();
-  }
-  set(key: K, action: V) {
-    const currentValue = this.db.get(key) || [];
-    this.db.set(key, currentValue.concat([action]));
-    return this;
-  }
-  get(key: K) {
-    return this.db.get(key) || [];
-  }
+const defaultEntry: StorageEntry = {
+    actions: [],
+};
+
+class DB {
+    db: Map<any, StorageEntry>;
+    constructor() {
+        this.db = new Map();
+    }
+    init(key: any, config: CreateMiddlewareOptions) {
+        this.db.set(key, {
+            ...defaultEntry,
+            ...pick(config, ['actionFilterFunction', 'gdprRetrievalFunction']),
+        });
+    }
+    add(key: any, action: Action) {
+        const currentValue = this.get(key);
+        this.db.set(key, {
+            ...currentValue,
+            actions: currentValue.actions.concat([action]),
+        });
+        return this;
+    }
+    get(key: any): StorageEntry {
+        return this.db.get(key) || defaultEntry;
+    }
 }
 
-const db = new ActionsDB<any, Action>();
+const db = new DB();
 // **temporarily** for testing
 export { db };
 

@@ -1,43 +1,47 @@
 {
-  "name": "redux-replayable",
-  "version": "1.0.0",
-  "description": "A Redux utility to collect actions for replaying and logging, with whitelisting and GDPR-friendly controls.",
-  "main": "dist/index.js",
-  "files": [
-    "dist/**/*"
-  ],
-  "scripts": {
-    "build": "tsc",
-    "watch": "tsc -w",
-    "test": "jest --config jestconfig.json",
-    "prepare": "yarn run build"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/klauspaiva/redux-replayable.git"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
+    "name": "redux-replayable",
+    "version": "1.0.0",
+    "description": "A Redux utility to collect actions for replaying and logging, with whitelisting and GDPR-friendly controls.",
+    "main": "dist/index.js",
+    "files": [
+        "dist/**/*"
+    ],
+    "scripts": {
+        "build": "tsc",
+        "watch": "tsc -w",
+        "test": "jest --config jestconfig.json",
+        "prepare": "yarn run build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/klauspaiva/redux-replayable.git"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "pretty-quick --staged"
+        }
+    },
+    "keywords": [
+        "redux actions",
+        "replay redux actions"
+    ],
+    "author": "Klaus Paiva",
+    "license": "GPL-3.0-or-later",
+    "bugs": {
+        "url": "https://github.com/klauspaiva/redux-replayable/issues"
+    },
+    "homepage": "https://github.com/klauspaiva/redux-replayable#readme",
+    "devDependencies": {
+        "@types/jest": "^23.3.10",
+        "@types/lodash": "^4.14.119",
+        "husky": "^1.2.1",
+        "jest": "^23.6.0",
+        "prettier": "^1.15.3",
+        "pretty-quick": "^1.8.0",
+        "ts-jest": "^23.10.5",
+        "typescript": "^3.2.2"
+    },
+    "dependencies": {
+        "lodash": "^4.17.11"
     }
-  },
-  "keywords": [
-    "redux actions",
-    "replay redux actions"
-  ],
-  "author": "Klaus Paiva",
-  "license": "GPL-3.0-or-later",
-  "bugs": {
-    "url": "https://github.com/klauspaiva/redux-replayable/issues"
-  },
-  "homepage": "https://github.com/klauspaiva/redux-replayable#readme",
-  "devDependencies": {
-    "@types/jest": "^23.3.10",
-    "husky": "^1.2.1",
-    "jest": "^23.6.0",
-    "prettier": "^1.15.3",
-    "pretty-quick": "^1.8.0",
-    "ts-jest": "^23.10.5",
-    "typescript": "^3.2.2"
-  }
 }
