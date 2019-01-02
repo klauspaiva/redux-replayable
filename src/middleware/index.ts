@@ -1,6 +1,6 @@
 import db from '../storage';
 import { Action } from '../types';
-import { ACTION_TYPE_REPLAY, ACTION_TYPE_CLEAR } from '../constants';
+import { REPLAYING_META_ATTRIBUTE, ACTION_TYPE_REPLAY, ACTION_TYPE_CLEAR } from '../constants';
 import { CreateMiddlewareOptions } from './types';
 
 export default (config: CreateMiddlewareOptions = {}) => (store: any) => {
@@ -13,7 +13,15 @@ export default (config: CreateMiddlewareOptions = {}) => (store: any) => {
         const entry = db.get(key);
 
         if (action.type === ACTION_TYPE_REPLAY) {
-            entry.actions.forEach(action => store.dispatch(action));
+            entry.actions.forEach(action =>
+                store.dispatch({
+                    ...action,
+                    meta: {
+                        ...action.meta,
+                        [REPLAYING_META_ATTRIBUTE]: true,
+                    },
+                }),
+            );
             return;
         } else if (action.type === ACTION_TYPE_CLEAR) {
             db.clear(key);

@@ -1,9 +1,16 @@
 import replayableMiddleware from './index';
 import * as storage from '../storage';
-import { REPLAYABLE_META_ATTRIBUTE } from '../constants';
+import {
+    REPLAYABLE_META_ATTRIBUTE,
+    REPLAYING_META_ATTRIBUTE,
+    ACTION_TYPE_REPLAY,
+    ACTION_TYPE_CLEAR,
+} from '../constants';
 import { Action } from '../types';
 
-const store = jest.fn();
+const store = {
+    dispatch: jest.fn(),
+};
 const next = jest.fn();
 const testReplayableAction: Action = {
     type: 'REPLAYABLE',
@@ -28,6 +35,8 @@ describe('Middleware', () => {
     });
     afterEach(() => {
         Object.keys(storageMock).forEach(key => (storageMock as any)[key].mockClear());
+        store.dispatch.mockClear();
+        next.mockClear();
     });
 
     describe('initialisation logic', () => {
@@ -50,7 +59,7 @@ describe('Middleware', () => {
     describe('actions not marked as replayable', () => {
         test('ignores actions that do not match filter function', () => {
             replayableMiddleware()(store)(next)(testGenericAction);
-            expect(storageMock.add).toBeCalledTimes(0);
+            expect(storageMock.add).not.toBeCalled();
         });
     });
 
@@ -62,5 +71,31 @@ describe('Middleware', () => {
 
             expect(storageMock.add).toHaveBeenNthCalledWith(1, store, testReplayableAction);
         });
+    });
+
+    describe('replaying actions', () => {
+        it('dispatches recorded actions when specific action is emitted', () => {
+            storageMock.get.mockReturnValue({
+                ...storage.defaultEntry,
+                actions: [testReplayableAction],
+            });
+            replayableMiddleware()(store)(next)({ type: ACTION_TYPE_REPLAY });
+
+            expect(next).not.toBeCalled();
+            expect(store.dispatch).toBeCalledTimes(1);
+            expect(store.dispatch).toHaveBeenNthCalledWith(1, {
+                ...testReplayableAction,
+                meta: {
+                    ...testReplayableAction.meta,
+                    [REPLAYING_META_ATTRIBUTE]: true,
+                },
+            });
+        });
+    });
+
+    it('clears list of actions when specific action is emitted', () => {
+        replayableMiddleware()(store)(next)({ type: ACTION_TYPE_CLEAR });
+        expect(next).not.toBeCalled();
+        expect(storageMock.clear).toBeCalledTimes(1);
     });
 });
