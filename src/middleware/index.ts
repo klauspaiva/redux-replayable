@@ -13,34 +13,18 @@ export default (config: CreateMiddlewareOptions = {}) => (store: any) => {
         const entry = db.get(key);
 
         if (action.type === ACTION_TYPE_REPLAY) {
-            console.group(ACTION_TYPE_REPLAY);
-            console.info('Replaying stored actions...');
-            console.groupEnd();
+            entry.actions.forEach(action => store.dispatch(action));
             return;
         } else if (action.type === ACTION_TYPE_CLEAR) {
-            console.group(ACTION_TYPE_CLEAR);
-            console.info('Resetting stored actions...');
             db.clear(key);
-            console.groupEnd();
             return;
         }
 
-        // if the action cannot be identified as replayable, just move on
-        if (entry.actionFilterFunction(action) !== true) {
-            console.group(action.type);
-            console.info(`Skipped...`);
-            console.groupEnd();
-            return next(action);
+        // should this action be stored?
+        if (entry.actionFilterFunction(action) === true) {
+            db.add(key, action);
         }
 
-        console.group(action.type);
-        console.info(entry);
-        db.add(key, action);
-        console.info('dispatching action', action);
-        let result = next(action);
-        console.log('next state', store.getState());
-        console.info(db.get(key));
-        console.groupEnd();
-        return result;
+        return next(action);
     };
 };
