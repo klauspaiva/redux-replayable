@@ -5,3 +5,7 @@ A Redux utility to collect actions for replaying and logging, with whitelisting 
 ## Local development
 
 Simply use `yarn link` and `yarn link redux-replayable` for an optimal dev loop.
+
+## Running tests
+
+`yarn test` is your friend. :)
