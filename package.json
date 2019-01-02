@@ -10,7 +10,9 @@
         "build": "tsc",
         "watch": "tsc -w",
         "test": "jest --config jestconfig.json",
-        "prepare": "yarn run build"
+        "prepare": "yarn run build",
+        "prepublishOnly": "npm test",
+        "postversion": "git push && git push --tags"
     },
     "repository": {
         "type": "git",
