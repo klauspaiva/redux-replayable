@@ -1,9 +1,10 @@
 import pick from 'lodash/pick';
+import { REPLAYABLE_META_ATTRIBUTE } from '../constants';
 import { Action } from '../types';
 import { CreateMiddlewareOptions } from '../middleware/types';
 import { StorageEntry, StorageDB } from './types';
 
-const defaultActionFilterFunction = (action: Action) => action.meta && action.meta.replayable === true;
+const defaultActionFilterFunction = (action: Action) => action.meta && action.meta[REPLAYABLE_META_ATTRIBUTE] === true;
 
 export const defaultEntry: StorageEntry = {
     actions: [],
