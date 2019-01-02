@@ -3,8 +3,11 @@ import { Action } from '../types';
 import { CreateMiddlewareOptions } from '../middleware/types';
 import { StorageEntry } from './types';
 
-const defaultEntry: StorageEntry = {
+const defaultActionFilterFunction = (action: Action) => action.meta && action.meta.replayable === true;
+
+export const defaultEntry: StorageEntry = {
     actions: [],
+    actionFilterFunction: defaultActionFilterFunction,
 };
 
 class DB {
@@ -29,10 +32,13 @@ class DB {
     get(key: any): StorageEntry {
         return this.db.get(key) || defaultEntry;
     }
+    clear(key: any): void {
+        const currentValue = this.get(key);
+        this.db.set(key, {
+            ...currentValue,
+            actions: [],
+        });
+    }
 }
 
-const db = new DB();
-// **temporarily** for testing
-export { db };
-
-export default undefined;
+export default new DB();

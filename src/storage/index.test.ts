@@ -1,4 +1,7 @@
-import { db } from './index';
+import db, { defaultEntry } from './index';
+
+const actionFilterSpy = jest.fn();
+defaultEntry.actionFilterFunction = actionFilterSpy;
 
 describe('Storage', () => {
     describe('init', () => {
@@ -10,6 +13,7 @@ describe('Storage', () => {
             });
             expect(db.get(key)).toEqual({
                 actions: [],
+                actionFilterFunction: actionFilterSpy,
             });
         });
 
@@ -33,21 +37,15 @@ describe('Storage', () => {
         test('adding and retrieving in sequence', () => {
             const key = 'key';
 
-            expect(db.get(key)).toEqual({
-                actions: [],
-            });
+            expect(db.get(key).actions).toEqual([]);
 
             const action1 = { type: 'ACTION1' };
             db.add(key, action1);
-            expect(db.get(key)).toEqual({
-                actions: [action1],
-            });
+            expect(db.get(key).actions).toEqual([action1]);
 
             const action2 = { type: 'ACTION2' };
             db.add(key, action2);
-            expect(db.get(key)).toEqual({
-                actions: [action1, action2],
-            });
+            expect(db.get(key).actions).toEqual([action1, action2]);
         });
 
         test('adding and retrieving different keys', () => {
@@ -56,19 +54,32 @@ describe('Storage', () => {
             const dummyAction = { type: 'DUMMY' };
 
             db.add(key1, dummyAction);
-            expect(db.get(key1)).toEqual({
-                actions: [dummyAction],
-            });
-            expect(db.get(key2)).toEqual({
-                actions: [],
-            });
+            expect(db.get(key1).actions).toEqual([dummyAction]);
+            expect(db.get(key2).actions).toEqual([]);
 
             db.add(key2, dummyAction);
-            expect(db.get(key1)).toEqual({
-                actions: [dummyAction],
+            expect(db.get(key1).actions).toEqual([dummyAction]);
+            expect(db.get(key2).actions).toEqual([dummyAction]);
+        });
+    });
+
+    describe('clear', () => {
+        it('resets list of actions while preserving callbacks', () => {
+            const key = 'clear-key';
+            const filterFn = () => true;
+            const dummyAction = { type: 'DUMMY' };
+
+            db.init({
+                id: key,
+                actionFilterFunction: filterFn,
             });
-            expect(db.get(key2)).toEqual({
-                actions: [dummyAction],
+            db.add(key, dummyAction);
+            expect(db.get(key).actions).toEqual([dummyAction]);
+
+            db.clear(key);
+            expect(db.get(key)).toEqual({
+                actions: [],
+                actionFilterFunction: filterFn,
             });
         });
     });
