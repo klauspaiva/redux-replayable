@@ -1,6 +1,6 @@
 {
     "name": "redux-replayable",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A Redux utility to collect actions for replaying and logging, with whitelisting and GDPR-friendly controls.",
     "main": "dist/index.js",
     "files": [
