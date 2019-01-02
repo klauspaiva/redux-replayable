@@ -1,7 +1,7 @@
 import pick from 'lodash/pick';
 import { Action } from '../types';
 import { CreateMiddlewareOptions } from '../middleware/types';
-import { StorageEntry } from './types';
+import { StorageEntry, StorageDB } from './types';
 
 const defaultActionFilterFunction = (action: Action) => action.meta && action.meta.replayable === true;
 
@@ -10,12 +10,12 @@ export const defaultEntry: StorageEntry = {
     actionFilterFunction: defaultActionFilterFunction,
 };
 
-class DB {
+class DB implements StorageDB {
     db: Map<any, StorageEntry>;
     constructor() {
         this.db = new Map();
     }
-    init(config: CreateMiddlewareOptions) {
+    init(config: CreateMiddlewareOptions): void {
         this.db.set(config.id, {
             ...defaultEntry,
             ...pick(config, ['actionFilterFunction', 'gdprRetrievalFunction']),
