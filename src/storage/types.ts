@@ -4,7 +4,7 @@ import { CreateMiddlewareOptions } from '../middleware/types';
 export interface StorageEntry {
     actions: Action[];
     actionFilterFunction: (action: Action) => boolean;
-    gdprRetrievalFunction?: () => Action[];
+    gdprFriendlyOutput: boolean;
 }
 
 export interface StorageDB {

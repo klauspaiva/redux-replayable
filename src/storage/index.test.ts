@@ -14,21 +14,21 @@ describe('Storage', () => {
             expect(db.get(key)).toEqual({
                 actions: [],
                 actionFilterFunction: actionFilterSpy,
+                gdprFriendlyOutput: true,
             });
         });
 
         test('should store callback functions if provided', () => {
             const filterFn = () => true;
-            const gdprFn = () => [];
             db.init({
                 id: key,
                 actionFilterFunction: filterFn,
-                gdprRetrievalFunction: gdprFn,
+                gdprFriendlyOutput: false,
             });
             expect(db.get(key)).toEqual({
                 actions: [],
                 actionFilterFunction: filterFn,
-                gdprRetrievalFunction: gdprFn,
+                gdprFriendlyOutput: false,
             });
         });
     });
@@ -64,7 +64,7 @@ describe('Storage', () => {
     });
 
     describe('clear', () => {
-        it('resets list of actions while preserving callbacks', () => {
+        it('resets list of actions while preserving other configuration values', () => {
             const key = 'clear-key';
             const filterFn = () => true;
             const dummyAction = { type: 'DUMMY' };
@@ -72,6 +72,7 @@ describe('Storage', () => {
             db.init({
                 id: key,
                 actionFilterFunction: filterFn,
+                gdprFriendlyOutput: false,
             });
             db.add(key, dummyAction);
             expect(db.get(key).actions).toEqual([dummyAction]);
@@ -80,6 +81,7 @@ describe('Storage', () => {
             expect(db.get(key)).toEqual({
                 actions: [],
                 actionFilterFunction: filterFn,
+                gdprFriendlyOutput: false,
             });
         });
     });
