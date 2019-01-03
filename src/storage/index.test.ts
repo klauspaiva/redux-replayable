@@ -14,7 +14,7 @@ describe('Storage', () => {
             expect(db.get(key)).toEqual({
                 actions: [],
                 actionFilterFunction: actionFilterSpy,
-                gdprFriendlyOutput: true,
+                gdprFriendlyRetrieval: true,
             });
         });
 
@@ -23,12 +23,12 @@ describe('Storage', () => {
             db.init({
                 id: key,
                 actionFilterFunction: filterFn,
-                gdprFriendlyOutput: false,
+                gdprFriendlyRetrieval: false,
             });
             expect(db.get(key)).toEqual({
                 actions: [],
                 actionFilterFunction: filterFn,
-                gdprFriendlyOutput: false,
+                gdprFriendlyRetrieval: false,
             });
         });
     });
@@ -72,7 +72,7 @@ describe('Storage', () => {
             db.init({
                 id: key,
                 actionFilterFunction: filterFn,
-                gdprFriendlyOutput: false,
+                gdprFriendlyRetrieval: false,
             });
             db.add(key, dummyAction);
             expect(db.get(key).actions).toEqual([dummyAction]);
@@ -81,7 +81,7 @@ describe('Storage', () => {
             expect(db.get(key)).toEqual({
                 actions: [],
                 actionFilterFunction: filterFn,
-                gdprFriendlyOutput: false,
+                gdprFriendlyRetrieval: false,
             });
         });
     });

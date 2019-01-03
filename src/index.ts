@@ -1,4 +1,5 @@
 import createMiddleware from './middleware';
+import retrieveReplayableActions from './retriever';
 import { CreateMiddlewareOptions } from './middleware/types';
 import {
     REPLAYABLE_META_ATTRIBUTE,
@@ -9,6 +10,7 @@ import {
 import { Action } from './types';
 
 export {
+    retrieveReplayableActions,
     Action,
     CreateMiddlewareOptions,
     REPLAYABLE_META_ATTRIBUTE,

@@ -3008,6 +3008,11 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+rdct@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/rdct/-/rdct-1.0.0.tgz#c4271921b423df425dbac9899319c62c3e4e2bf0"
+  integrity sha512-LSdXIv5mRxgL3zCmcgQCyR1J1Khsutl5bzOwVV4cxqqNxK27g+ZIppE2jTpzXR+5B+8qWm5lth8KF4DhuK/szg==
+
 read-pkg-up@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/read-pkg-up/-/read-pkg-up-1.0.1.tgz#9d63c13276c065918d57f002a57f40a1b643fb02"

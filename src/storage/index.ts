@@ -9,7 +9,7 @@ const defaultActionFilterFunction = (action: Action) => action.meta && action.me
 export const defaultEntry: StorageEntry = {
     actions: [],
     actionFilterFunction: defaultActionFilterFunction,
-    gdprFriendlyOutput: true,
+    gdprFriendlyRetrieval: true,
 };
 
 class DB implements StorageDB {
@@ -20,7 +20,7 @@ class DB implements StorageDB {
     init(config: CreateMiddlewareOptions): void {
         this.db.set(config.id, {
             ...defaultEntry,
-            ...pick(config, ['actionFilterFunction', 'gdprFriendlyOutput']),
+            ...pick(config, ['actionFilterFunction', 'gdprFriendlyRetrieval']),
         });
     }
     add(key: any, action: Action) {
