@@ -18,10 +18,6 @@ export default (key: any): Action[] => {
             },
         };
 
-        // just to avoid creating an entry for "meta" if original action didn't have it
-        if (!action.meta) {
-            delete redactedAction.meta;
-        }
         return redactedAction;
     });
 };

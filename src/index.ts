@@ -4,6 +4,7 @@ import { CreateMiddlewareOptions } from './middleware/types';
 import {
     REPLAYABLE_META_ATTRIBUTE,
     REPLAYING_META_ATTRIBUTE,
+    DISPATCHED_AT_META_ATTRIBUTE,
     ACTION_TYPE_REPLAY,
     ACTION_TYPE_CLEAR,
 } from './constants';
@@ -15,6 +16,7 @@ export {
     CreateMiddlewareOptions,
     REPLAYABLE_META_ATTRIBUTE,
     REPLAYING_META_ATTRIBUTE,
+    DISPATCHED_AT_META_ATTRIBUTE,
     ACTION_TYPE_REPLAY,
     ACTION_TYPE_CLEAR,
 };

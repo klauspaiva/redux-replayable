@@ -1,5 +1,5 @@
 import pick from 'lodash/pick';
-import { REPLAYABLE_META_ATTRIBUTE } from '../constants';
+import { REPLAYABLE_META_ATTRIBUTE, DISPATCHED_AT_META_ATTRIBUTE } from '../constants';
 import { Action } from '../types';
 import { CreateMiddlewareOptions } from '../middleware/types';
 import { StorageEntry, StorageDB } from './types';
@@ -25,10 +25,19 @@ class DB implements StorageDB {
     }
     add(key: any, action: Action) {
         const currentValue = this.get(key);
+
+        const actionToStore = {
+            ...action,
+            meta: {
+                ...action.meta,
+                [DISPATCHED_AT_META_ATTRIBUTE]: Date.now(),
+            },
+        };
         this.db.set(key, {
             ...currentValue,
-            actions: currentValue.actions.concat([action]),
+            actions: currentValue.actions.concat([actionToStore]),
         });
+
         return this;
     }
     get(key: any): StorageEntry {

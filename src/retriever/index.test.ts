@@ -1,5 +1,5 @@
 import retriever from './index';
-import { REPLAYABLE_META_ATTRIBUTE } from '../constants';
+import { REPLAYABLE_META_ATTRIBUTE, DISPATCHED_AT_META_ATTRIBUTE } from '../constants';
 import { Action } from '../types';
 import * as storage from '../storage';
 
@@ -12,11 +12,15 @@ const storageMock = {
 
 const simpleAction: Action = {
     type: 'SIMPLE_ACTION',
+    meta: {
+        [DISPATCHED_AT_META_ATTRIBUTE]: 42,
+    },
 };
 const complexAction: Action = {
     type: 'COMPLEX_ACTION',
     meta: {
         [REPLAYABLE_META_ATTRIBUTE]: true,
+        [DISPATCHED_AT_META_ATTRIBUTE]: 7777,
         analytics: new Object(),
     },
     user: 'panda@example.com',

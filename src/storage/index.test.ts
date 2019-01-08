@@ -1,9 +1,27 @@
 import db, { defaultEntry } from './index';
+import { DISPATCHED_AT_META_ATTRIBUTE } from '../constants';
+import { Action } from '../types';
 
 const actionFilterSpy = jest.fn();
 defaultEntry.actionFilterFunction = actionFilterSpy;
 
+const getTimestampedAction = (action: Action) => ({
+    ...action,
+    meta: {
+        ...action.meta,
+        [DISPATCHED_AT_META_ATTRIBUTE]: Date.now(),
+    },
+});
+
 describe('Storage', () => {
+    let dateMock: jest.Mock;
+    beforeEach(() => {
+        dateMock = jest.spyOn(Date, 'now').mockImplementation(() => 42);
+    });
+    afterEach(() => {
+        dateMock.mockRestore();
+    });
+
     describe('init', () => {
         const key = 'init-key';
 
@@ -41,11 +59,11 @@ describe('Storage', () => {
 
             const action1 = { type: 'ACTION1' };
             db.add(key, action1);
-            expect(db.get(key).actions).toEqual([action1]);
+            expect(db.get(key).actions).toEqual([getTimestampedAction(action1)]);
 
             const action2 = { type: 'ACTION2' };
             db.add(key, action2);
-            expect(db.get(key).actions).toEqual([action1, action2]);
+            expect(db.get(key).actions).toEqual([getTimestampedAction(action1), getTimestampedAction(action2)]);
         });
 
         test('adding and retrieving different keys', () => {
@@ -54,12 +72,12 @@ describe('Storage', () => {
             const dummyAction = { type: 'DUMMY' };
 
             db.add(key1, dummyAction);
-            expect(db.get(key1).actions).toEqual([dummyAction]);
+            expect(db.get(key1).actions).toEqual([getTimestampedAction(dummyAction)]);
             expect(db.get(key2).actions).toEqual([]);
 
             db.add(key2, dummyAction);
-            expect(db.get(key1).actions).toEqual([dummyAction]);
-            expect(db.get(key2).actions).toEqual([dummyAction]);
+            expect(db.get(key1).actions).toEqual([getTimestampedAction(dummyAction)]);
+            expect(db.get(key2).actions).toEqual([getTimestampedAction(dummyAction)]);
         });
     });
 
@@ -75,7 +93,7 @@ describe('Storage', () => {
                 gdprFriendlyRetrieval: false,
             });
             db.add(key, dummyAction);
-            expect(db.get(key).actions).toEqual([dummyAction]);
+            expect(db.get(key).actions).toEqual([getTimestampedAction(dummyAction)]);
 
             db.clear(key);
             expect(db.get(key)).toEqual({
