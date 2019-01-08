@@ -64,7 +64,7 @@ It is also possible to clear the list of actions at will by emitting the followi
 }
 ```
 
-> **Pro-tip**: under normal circunstances your app's reducers should probably just do the same thing regardless.
+> **Pro-tip**: under normal circumstances your app's reducers should probably just do the same thing regardless.
 
 ### Replaying actions: approach #2
 
