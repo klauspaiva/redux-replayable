@@ -51,6 +51,25 @@ import { REPLAYABLE_META_ATTRIBUTE } from 'redux-replayable';
 
 Now that the set up is done, there are two options to replay actions: a simpler one and another more flexible.
 
+### Extra meta properties
+
+**For convenience**, actions are stored and then emitted with two additional properties to `action.meta`, so your app might decide to do something slightly different when a certain action is replayed.
+
+```js
+import { REPLAYING_META_ATTRIBUTE, DISPATCHED_AT_META_ATTRIBUTE } from 'redux-replayable';
+
+{
+    ...originalAction,
+    meta: {
+        ...originalAction.meta,
+        [DISPATCHED_AT_META_ATTRIBUTE]: Date.now(), // of when the action was originally dispatched
+        [REPLAYING_META_ATTRIBUTE]: true, // added for convenience to all replayed actions
+    }
+}
+```
+
+> **Pro-tip**: under normal circumstances your app's reducers should probably just do the same thing regardless.
+
 ### Replaying actions: approach #1
 
 The simple approach consists of emitting a specific action recognised by this module, which then will cause the respective actions to be replayed in the exact order they originally happened (without any delay between them).
@@ -68,22 +87,6 @@ store.dispatch({
 **Note**: replaying actions using this method does not take into consideration the GDPR flag as there is no way for your app to mishandle user information other than what it already does.
 
 It is also possible to clear the list of actions at will by emitting the following action: `ACTION_TYPE_CLEAR`.
-
-**For convenience**, actions are emitted with an additional property to `action.meta`, so your app might decide to do something slightly different when a certain action is replayed.
-
-```js
-import { REPLAYING_META_ATTRIBUTE } from 'redux-replayable';
-
-{
-    ...originalAction,
-    meta: {
-        ...originalAction.meta,
-        [REPLAYING_META_ATTRIBUTE]: true, // added for convenience to all replayed actions
-    }
-}
-```
-
-> **Pro-tip**: under normal circumstances your app's reducers should probably just do the same thing regardless.
 
 ### Replaying actions: approach #2
 
@@ -116,11 +119,11 @@ export interface CreateMiddlewareOptions {
 }
 ```
 
-| Property                | Default                                                                     | Explanation                                                                                                                           |
-| ----------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`                    | `store` instance                                                            | Any value or object used as "key" to store actions emitted against.                                                                   |
-| `actionFilterFunction`  | `action => action.meta && action.meta.[REPLAYABLE_META_ATTRIBUTE] === true` | A function that receives every action and should return `true` for actions that can be replayed (so stored), `false` otherwise.       |
-| `gdprFriendlyRetrieval` | `true`                                                                      | Whether actions retrieved in bulk (via call to `retrieveReplayableActions`) have potentially sensitive values automatically redacted. |
+| Property                | Default                                                                     | Explanation                                                                                                                                                                                                    |
+| ----------------------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                    | `store` instance                                                            | Any value or object used as "key" to store actions emitted against.                                                                                                                                            |
+| `actionFilterFunction`  | `action => action.meta && action.meta.[REPLAYABLE_META_ATTRIBUTE] === true` | A function that receives every action and should return `true` for actions that can be replayed (so stored), `false` otherwise.                                                                                |
+| `gdprFriendlyRetrieval` | `true`                                                                      | Whether actions retrieved in bulk (via call to `retrieveReplayableActions`) have potentially sensitive values automatically redacted.<br>Actions replayed by emitting `ACTION_TYPE_REPLAY` are never redacted. |
 
 ## Local development
 
