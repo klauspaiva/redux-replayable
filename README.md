@@ -50,6 +50,8 @@ store.dispatch({
 });
 ```
 
+**Note**: replaying actions does not take into consideration the GDPR flag.
+
 It is also possible to clear the list of actions at will by emitting the following action: `ACTION_TYPE_CLEAR`.
 
 **For convenience**, actions are emitted with an additional property to `action.meta`, so your app might decide to do something slightly different when a certain action is replayed.
