@@ -34,6 +34,21 @@ const store = createStore(reducer, preloadedState, applyMiddleware(replayableMid
 
 > **Pro-tip**: note that `replayableMiddleware()` is a function call, as you can provide a configuration object to customise its behaviour (detailed below).
 
+With the default configuration, actions that match the following `action.meta` structure will be stored:
+
+```js
+import { REPLAYABLE_META_ATTRIBUTE } from 'redux-replayable';
+
+{
+    ...yourAction,
+    meta: {
+        ...yourAction.meta,
+        // with the default configuration, the presence of this key with the value `true` is the marker for an action to be stored
+        [REPLAYABLE_META_ATTRIBUTE]: true,
+    }
+}
+```
+
 Now that the set up is done, there are two options to replay actions: a simpler one and another more flexible.
 
 ### Replaying actions: approach #1
@@ -50,18 +65,20 @@ store.dispatch({
 });
 ```
 
-**Note**: replaying actions does not take into consideration the GDPR flag.
+**Note**: replaying actions using this method does not take into consideration the GDPR flag as there is no way for your app to mishandle user information other than what it already does.
 
 It is also possible to clear the list of actions at will by emitting the following action: `ACTION_TYPE_CLEAR`.
 
 **For convenience**, actions are emitted with an additional property to `action.meta`, so your app might decide to do something slightly different when a certain action is replayed.
 
 ```js
+import { REPLAYING_META_ATTRIBUTE } from 'redux-replayable';
+
 {
     ...originalAction,
     meta: {
         ...originalAction.meta,
-        replaying: true, // added for convenience to all replayed actions
+        [REPLAYING_META_ATTRIBUTE]: true, // added for convenience to all replayed actions
     }
 }
 ```
@@ -70,7 +87,7 @@ It is also possible to clear the list of actions at will by emitting the followi
 
 ### Replaying actions: approach #2
 
-This approach is more flexible as it gives you raw access to the list of actions, while still adhering to the initial configuration of GDPR-friendliness.
+This approach is more flexible as it gives you raw access to the list of actions, **but adhering to the initial configuration of GDPR-friendliness**.
 
 It is done as follows:
 
@@ -99,11 +116,11 @@ export interface CreateMiddlewareOptions {
 }
 ```
 
-| Property                | Default                                                    | Explanation                                                                                                                           |
-| ----------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`                    | `store` instance                                           | Any value or object used as "key" to store actions emitted against.                                                                   |
-| `actionFilterFunction`  | `action => action.meta && action.meta.replayable === true` | A function that receives every action and should return `true` for actions that can be replayed (so stored), `false` otherwise.       |
-| `gdprFriendlyRetrieval` | `true`                                                     | Whether actions retrieved in bulk (via call to `retrieveReplayableActions`) have potentially sensitive values automatically redacted. |
+| Property                | Default                                                                     | Explanation                                                                                                                           |
+| ----------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                    | `store` instance                                                            | Any value or object used as "key" to store actions emitted against.                                                                   |
+| `actionFilterFunction`  | `action => action.meta && action.meta.[REPLAYABLE_META_ATTRIBUTE] === true` | A function that receives every action and should return `true` for actions that can be replayed (so stored), `false` otherwise.       |
+| `gdprFriendlyRetrieval` | `true`                                                                      | Whether actions retrieved in bulk (via call to `retrieveReplayableActions`) have potentially sensitive values automatically redacted. |
 
 ## Local development
 
