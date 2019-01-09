@@ -1,5 +1,5 @@
 import retriever from './index';
-import { REPLAYABLE_META_ATTRIBUTE, DISPATCHED_AT_META_ATTRIBUTE } from '../constants';
+import { REPLAYABLE_META_ATTRIBUTE, REPLAYING_META_ATTRIBUTE, DISPATCHED_AT_META_ATTRIBUTE } from '../constants';
 import { Action } from '../types';
 import * as storage from '../storage';
 
@@ -44,10 +44,20 @@ describe('Retrieval of recorded actions', () => {
 
             const actions = retriever(key);
             expect(actions).toEqual([
-                simpleAction,
+                {
+                    ...simpleAction,
+                    meta: {
+                        ...simpleAction.meta,
+                        [REPLAYING_META_ATTRIBUTE]: true,
+                    },
+                },
                 {
                     ...complexAction,
                     user: 'p***************m',
+                    meta: {
+                        ...complexAction.meta,
+                        [REPLAYING_META_ATTRIBUTE]: true,
+                    },
                 },
             ]);
         });
@@ -61,7 +71,22 @@ describe('Retrieval of recorded actions', () => {
             });
 
             const actions = retriever(key);
-            expect(actions).toEqual([simpleAction, complexAction]);
+            expect(actions).toEqual([
+                {
+                    ...simpleAction,
+                    meta: {
+                        ...simpleAction.meta,
+                        [REPLAYING_META_ATTRIBUTE]: true,
+                    },
+                },
+                {
+                    ...complexAction,
+                    meta: {
+                        ...complexAction.meta,
+                        [REPLAYING_META_ATTRIBUTE]: true,
+                    },
+                },
+            ]);
         });
     });
 });
